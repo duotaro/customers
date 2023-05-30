@@ -3,9 +3,9 @@ export default function Side({  }) {
     return (
         <aside className="main-sidebar sidebar-dark-primary elevation-4" >
         {/* Brand Logo */}
-        <a href="index3.html" className="brand-link">
-        <span className="brand-text font-weight-light">管理画面</span>
-        </a>
+        <Link href="/" className="brand-link">
+         <span className="brand-text font-weight-light">顧客管理画面</span>
+        </Link>
 
         {/* Sidebar */}
         <div className="sidebar" >
@@ -38,9 +38,9 @@ export default function Side({  }) {
               </Link>
             </li>
             <li className="nav-item">
-              <Link href="/register" className="nav-link">
+              <Link href="/about" className="nav-link">
                 <i className="nav-icon fas fa-th"></i>
-                <p>履歴</p>
+                <p>サイトについて</p>
               </Link>
             </li>
           </ul>

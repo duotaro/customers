@@ -67,6 +67,11 @@ if (typeof window !== "undefined" && typeof window.localStorage !== 'undefined')
      */
     const getCustomer = (id) => {
         const res = getItem(LOCALSTORAGE_KEY_CUSTOMER_LIST);
+        console.log(`----------------`)
+        console.log(`----------------`)
+        console.log(`----------------`)
+        console.log(`id is ${id}`)
+        console.log(res)
         if(!res){
             return {
                 list: [],
@@ -112,20 +117,22 @@ if (typeof window !== "undefined" && typeof window.localStorage !== 'undefined')
      */
     const addCustomerList = (value) => {
         // 新規登録なので上書きではないことを確認してみる
-        const list = getItem(LOCALSTORAGE_KEY_CUSTOMER_LIST)
-        let doCreate = confirm(`以下の内容で作成します。よろしいですか？${JSON.stringify(value)}`);
-        if(!doCreate) {
-            return
-        }
+        const list = getItem(LOCALSTORAGE_KEY_CUSTOMER_LIST) || []
+        // let doCreate = confirm(`以下の内容で作成します。よろしいですか？${JSON.stringify(value)}`);
+        // if(!doCreate) {
+        //     return
+        // }
         let matchName = false
-        for(const item of list) {
-            if(item.name == value.name) {
-                matchName = true;
+        if(list && list.length > 0){
+            for(const item of list) {
+                if(item.name == value.name) {
+                    matchName = true;
+                }
             }
-        }
-        if(matchName){
-            if(!confirm("同一名の顧客が存在します。上書きではなく、新規登録しますか？")){
-                return 
+            if(matchName){
+                if(!confirm("同一名の顧客が存在します。上書きではなく、新規登録しますか？")){
+                    return 
+                }
             }
         }
         // リストに追加

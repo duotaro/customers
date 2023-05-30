@@ -71,7 +71,9 @@ export const testData = [
  * 登録・編集フォーム
  */
 
-
+/**
+ * 階数
+ */
 export const formFloorOptions = [
     { value: "1", label: "1階" },
     { value: "2", label: "2階" },
@@ -80,11 +82,24 @@ export const formFloorOptions = [
     { value: "none", label: "-" },
 ];
 
-export const formRiceOptions = [
+/**
+ * グラム
+ */
+export const formRiceVolumeOptions = [
     { value: "none", label: "なし" },
     { value: "1", label: "50g" },
     { value: "2", label: "100g" },
     { value: "3", label: "150g" },
     { value: "4", label: "200g" },
+];
+
+/**
+ * 主食
+ */
+export const formRiceOptions = [
+    { value: "none", label: "なし" },
+    { value: "1", label: "軟飯" },
+    { value: "2", label: "米飯" },
+    { value: "3", label: "パン" }
 ];
   

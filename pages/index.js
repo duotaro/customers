@@ -1,20 +1,33 @@
 'use client';
 import { useState, useEffect } from 'react'
 import Head from "next/head.js";
+import Link from 'next/link.js';
 import Layout from '../components/layout.js'
 import { testData } from "@/utils/const.js";
 import { customerStorageItem } from '@/utils/localstorage.js';
+import Total from '@/components/parts/total.js';
 
 export default function Home({}) {
   
   const [list, setList] = useState(testData)
-  const [total, setTotal] = useState({
-    total: 0,
-    total1: 0,
-    total2: 0,
-    total3: 0,
-    total4: 0,
-  })
+  const [total, setTotal] = useState([
+    {
+      total: 24,
+      floor: 1
+    },
+    {
+      total: 34,
+      floor: 2
+    },
+    {
+      total: 28,
+      floor: 3
+    },
+    {
+      total: 29,
+      floor: 4
+    },
+  ])
 
   /**
    * 全選択
@@ -96,7 +109,6 @@ export default function Home({}) {
     setListAndCalc(resultList)
   }
 
-
   /**
    * 一覧設定と再計算
    * @param {*} resultList 
@@ -107,40 +119,62 @@ export default function Home({}) {
     }
     setList(resultList);
     let total1 = 0
+    let totalAmount1 = 0
     let total2 = 0
+    let totalAmount2 = 0
     let total3 = 0
+    let totalAmount3 = 0
     let total4 = 0
+    let totalAmount4 = 0
+
     for(const item of resultList) {
       if(!item.checked){
         continue
       }
       if(item.floor == 1){
-        total1 += item.prop1
+        total1++
+        totalAmount1 += item.prop1
       } else if(item.floor == 2){
-        total2 += item.prop1
+        total2++
+        totalAmount2 += item.prop1
       } else if(item.floor == 3){
-        total3 += item.prop1
+        total3++
+        totalAmount3 += item.prop1
       } else if(item.floor == 4){
-        total4 += item.prop1
+        total4++
+        totalAmount4 += item.prop1
       } 
     }
-    const amount = (total1+total2+total3+total4)
-    setTotal({
-      amount,
-      total1,
-      total2,
-      total3,
-      total4
-    })
+    setTotal([
+      {
+        amount: totalAmount1,
+        floor: 1,
+        color: 'info'
+      },
+      {
+        amount: totalAmount2,
+        floor: 2,
+        color: 'primary'
+      },
+      {
+        amount: totalAmount3,
+        floor: 3,
+        color: 'danger'
+      },
+      {
+        amount: totalAmount4,
+        floor: 4,
+        color: 'warning'
+      }
+    ])
   }
 
-  const customers = customerStorageItem.getCustomerList()
-  console.error(customers);
+
   useEffect(() => {
   
-    console.error(customers);
+    const customers = customerStorageItem.getCustomerList()  
     setListAndCalc(customers)
-  }, [customers]);
+  }, []);
   
   return (
     <Layout>
@@ -155,56 +189,7 @@ export default function Home({}) {
         {/* Main content */}
         <section className="content">
           <div className="container-fluid">
-            {/* Small boxes (Stat box) */}
-            <div className="row">
-              <div className="col-lg-3 col-6">
-                {/* small box */}
-                <div className="small-box bg-info">
-                  <div className="inner">
-                    <h3>{total.total1}</h3>
-                    <p>1階</p>
-                  </div>
-                </div>
-              </div>
-              {/* ./col */}
-              <div className="col-lg-3 col-6">
-                {/* small box */}
-                <div className="small-box bg-success">
-                  <div className="inner">
-                    <h3>{total.total2}</h3>
-                    <p>2階</p>
-                  </div>
-                </div>
-              </div>
-              {/* ./col */}
-              <div className="col-lg-3 col-6">
-                {/* small box */}
-                <div className="small-box bg-warning">
-                  <div className="inner">
-                    <h3>{total.total3}</h3>
-                    <p>3階</p>
-                  </div>
-                  <div className="icon">
-                    <i className="ion ion-person-add"></i>
-                  </div>
-                </div>
-              </div>
-              {/* ./col */}
-              <div className="col-lg-3 col-6">
-                {/* small box */}
-                <div className="small-box bg-danger">
-                  <div className="inner">
-                    <h3>{total.total4}</h3>
-                    <p>4階</p>
-                  </div>
-                  <div className="icon">
-                    <i className="ion ion-pie-graph"></i>
-                  </div>
-                </div>
-              </div>
-              {/* ./col */}
-            </div>
-            {/* /.row */}
+            <Total total={total}/>
             {/* Main row */}
             <div className="row">
               {/* Left col */}
@@ -256,7 +241,8 @@ export default function Home({}) {
                               <th className="sorting" tabIndex="0" aria-controls="example2" rowSpan="1" colSpan="1" >ID/Name</th>
                               <th className="sorting" tabIndex="0" aria-controls="example2" rowSpan="1" colSpan="1" >階</th>
                               <th className="sorting" tabIndex="0" aria-controls="example2" rowSpan="1" colSpan="1" >prop1</th>
-                              <th className="sorting" tabIndex="0" aria-controls="example2" rowSpan="1" colSpan="1" >prop2</th>
+                              <th className="sorting" tabIndex="0" aria-controls="example2" rowSpan="1" colSpan="1" >メモ</th>
+                              <th className="sorting" tabIndex="0" aria-controls="example2" rowSpan="1" colSpan="1" >編集</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -271,12 +257,18 @@ export default function Home({}) {
                                     <td className="dtr-control sorting_1" tabIndex="0">{data.id} / {data.name}</td>
                                     <td>{data.floor}階</td>
                                     <td>{data.prop1}</td>
-                                    <td>{data.prop2}</td>
+                                    <td>{data.memo}</td>
+                                    <td>
+                                      <Link href={{
+                                        pathname: "/edit/[id]/",
+                                        query: { id: data.id },
+                                      }}>編集</Link>
+                                    </td>
                                   </tr>
                                 );
                               })}
                             </tbody>
-                            <tfoot>
+                            {/* <tfoot>
                               <tr>
                                 <th rowSpan="1" colSpan="1">Rendering engine</th>
                                 <th rowSpan="1" colSpan="1">Browser</th>
@@ -284,7 +276,7 @@ export default function Home({}) {
                                 <th rowSpan="1" colSpan="1">Engine version</th>
                                 <th rowSpan="1" colSpan="1">CSS grade</th>
                               </tr>
-                            </tfoot>
+                            </tfoot> */}
                           </table>
                         </div>
                       </div>

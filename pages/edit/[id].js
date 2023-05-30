@@ -1,66 +1,18 @@
 'use client';
-import { useState } from 'react'
-import Head from "next/head.js";
+import { useRouter } from 'next/router';
 import Layout from '../../components/layout.js'
-import { testData } from "@/utils/const.js";
+import FormComponent from '@/components/parts/form.js';
 
-export default function Register({}) {
- 
-  
+export default function Edit(props) {
+  console.log(props)
+  const router = useRouter();
+  console.log(router)
+
+  let id = router.query.id
+  console.log(id)
   return (
     <Layout>
-      <Head>
-        <title>登録</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      {/* Content Wrapper. Contains page content */}
-      <div className="content-wrapper p-5">
-
-        {/* Main content */}
-        <div class="card card-primary">
-          <div class="card-header">
-            <h3 class="card-title">登録</h3>
-          </div>
-
-
-          <form>
-          <div class="card-body">
-          <div class="form-group">
-          <label for="exampleInputEmail1">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" />
-          </div>
-          <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
-          </div>
-          <div class="form-group">
-          <label for="exampleInputFile">File input</label>
-          <div class="input-group">
-          <div class="custom-file">
-          <input type="file" class="custom-file-input" id="exampleInputFile" />
-          <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-          </div>
-          <div class="input-group-append">
-          <span class="input-group-text">Upload</span>
-          </div>
-          </div>
-          </div>
-          <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-          <label class="form-check-label" for="exampleCheck1">Check me out</label>
-          </div>
-          </div>
-
-          <div class="card-footer">
-          <button type="submit" class="btn btn-primary">Submit</button>
-          </div>
-          </form>
-        </div>
-        {/* /.content */}
-      </div>
-      {/* /.content-wrapper */}
-
+      <FormComponent id={id}/>
     </Layout>
   );
 }
